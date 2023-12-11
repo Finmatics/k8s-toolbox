@@ -23,8 +23,9 @@ RUN set -eux \
     unzip \
     xz \
     zip \
-    && git clone https://github.com/tfutils/tfenv.git ~/.tfenv \
-    && echo 'PATH=${HOME}/.tfenv/bin:/usr/local/bin:${PATH}' >> ~/.bashrc \
+    && git clone --depth 1 https://github.com/tfutils/tfenv.git ~/.tfenv \
+    && git clone --depth 1 https://github.com/tgenv/tgenv.git ~/.tgenv \
+    && echo 'PATH=${HOME}/.tfenv/bin:${HOME}/.tgenv/bin:/usr/local/bin:${PATH}' >> ~/.bashrc \
     && curl -fsSLo /usr/local/bin/kubectl  \
         "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
     && curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash \
