@@ -37,5 +37,13 @@ RUN set -eux \
     && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd \
     && ln -sf /bin/bash /bin/sh
 
+ENV TF_VERSION=1.5.4
+RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash \
+    && tfswitch ${TF_VERSION}
+ 
+ENV TG_VERSION=0.48.6
+RUN curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash \
+    && tgswitch ${TG_VERSION}
+
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/bin/bash"]
