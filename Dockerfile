@@ -45,5 +45,7 @@ ENV TG_VERSION=0.48.6
 RUN curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash \
     && tgswitch ${TG_VERSION}
 
+RUN curl -sL https://aka.ms/InstallAzureCli | bash
+
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/bin/bash"]
