@@ -4,7 +4,8 @@ FROM ${IMAGE_NAME}:${IMAGE_TAG}
 
 WORKDIR /root
 
-ENV PATH="${HOME}/.tfenv/bin:/usr/local/bin:${PATH}"
+ENV HOME="/root"
+ENV PATH="$HOME/.tfenv/bin:$HOME/.tgenv/bin:/usr/local/bin:$PATH"
 
 RUN set -eux \
     && apt update && \
@@ -49,4 +50,4 @@ RUN curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/instal
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 ENTRYPOINT ["/bin/bash", "-c"]
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "-c"]
