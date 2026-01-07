@@ -5,7 +5,7 @@ FROM ${IMAGE_NAME}:${IMAGE_TAG}
 WORKDIR /root
 
 ENV HOME="/root"
-ENV PATH="$HOME/.tfenv/bin:$HOME/.tgenv/bin:/usr/local/bin:$PATH"
+ENV PATH="$HOME/.tfenv/bin:$HOME/.tgenv/bin:$HOME/.tofuenv/bin:/usr/local/bin:$PATH"
 
 RUN set -eux \
     && apt update && \
@@ -27,7 +27,8 @@ RUN set -eux \
     zip \
     && git clone --depth 1 https://github.com/tfutils/tfenv.git ~/.tfenv \
     && git clone --depth 1 https://github.com/tgenv/tgenv.git ~/.tgenv \
-    && echo 'PATH=${HOME}/.tfenv/bin:${HOME}/.tgenv/bin:/usr/local/bin:${PATH}' >> ~/.bashrc \
+    && git clone --depth 1 https://github.com/tofuutils/tofuenv.git ~/.tofuenv \
+    && echo 'PATH=${HOME}/.tfenv/bin:${HOME}/.tgenv/bin:${HOME}/.tofuenv/bin:/usr/local/bin:${PATH}' >> ~/.bashrc \
     && curl -fsSLo /usr/local/bin/kubectl  \
     "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
     && curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash \
@@ -46,6 +47,10 @@ RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/rele
 ENV TG_VERSION=0.96.1
 RUN curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash \
     && tgswitch ${TG_VERSION}
+
+ENV TOFU_VERSION=1.9.0
+RUN ~/.tofuenv/bin/tofuenv install ${TOFU_VERSION} \
+    && ~/.tofuenv/bin/tofuenv use ${TOFU_VERSION}
 
 # Azure CLI not required anymore at the moment
 # RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
