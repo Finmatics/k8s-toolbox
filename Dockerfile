@@ -39,15 +39,16 @@ RUN set -eux \
     && ln -sf /bin/bash /bin/sh \
     && rm -rf /var/lib/apt/lists/*
 
-ENV TF_VERSION=1.5.4
+ENV TF_VERSION=1.14.3
 RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash \
     && tfswitch ${TF_VERSION}
 
-ENV TG_VERSION=0.48.6
+ENV TG_VERSION=0.96.1
 RUN curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash \
     && tgswitch ${TG_VERSION}
 
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+# Azure CLI not required anymore at the moment
+# RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list \
