@@ -29,7 +29,7 @@ RUN set -eux \
     && git clone --depth 1 https://github.com/tgenv/tgenv.git ~/.tgenv \
     && echo 'PATH=${HOME}/.tfenv/bin:${HOME}/.tgenv/bin:/usr/local/bin:${PATH}' >> ~/.bashrc \
     && curl -fsSLo /usr/local/bin/kubectl  \
-        "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
+    "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
     && curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash \
     && export VERIFY_CHECKSUM=false \
     && curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash \
@@ -42,12 +42,18 @@ RUN set -eux \
 ENV TF_VERSION=1.5.4
 RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash \
     && tfswitch ${TF_VERSION}
- 
+
 ENV TG_VERSION=0.48.6
 RUN curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash \
     && tgswitch ${TG_VERSION}
 
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list \
+    && apt update \
+    && apt install -y google-cloud-cli \
+    && rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/bin/bash", "-c"]
