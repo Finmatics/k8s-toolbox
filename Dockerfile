@@ -61,8 +61,5 @@ RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dea
     && apt install -y google-cloud-cli \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./get_gcp_token.sh /usr/local/bin/get_gcp_token.sh
-RUN chmod +x /usr/local/bin/get_gcp_token.sh
-
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/bin/bash", "-c"]
